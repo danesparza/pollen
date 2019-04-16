@@ -84,9 +84,10 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 
 	//	Set the properties in the return object:
 	retval = PollenReport{
+		ReportingService:  "Zyrtec",
 		PredominantPollen: serviceResponse.PredominantPollen,
 		Zipcode:           serviceResponse.Zipcode,
-		City:              serviceResponse.Location,
+		Location:          serviceResponse.Location,
 		StartDate:         parsedStartDate,
 		Data:              dataitems,
 	}
