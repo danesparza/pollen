@@ -3,7 +3,6 @@ package data
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -32,15 +31,16 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 	retval := PollenReport{}
 
 	//	Format the url:
-	url := fmt.Sprintf("https://api.allergycastapp.com/allergies/dashboard/%s", zipcode)
+	apiurl := fmt.Sprintf("https://api.allergycastapp.com/allergies/dashboard/%s", zipcode)
 
 	//	Create the client
 	client := &http.Client{}
 
 	//	Create our request:
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", apiurl, nil)
 	if err != nil {
-		log.Fatal(err)
+		apperr := fmt.Errorf("There was a problem creating the Zyrtec API request: %s", err)
+		return retval, apperr
 	}
 
 	//	Execute our request:
