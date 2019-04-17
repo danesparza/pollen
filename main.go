@@ -7,6 +7,15 @@ import (
 	"github.com/danesparza/pollen/data"
 )
 
+var (
+	// BuildVersion contains the version information for the app
+	BuildVersion = "Unknown"
+
+	// CommitID is the git commitId for the app.  It's filled in as
+	// part of the automated build
+	CommitID string
+)
+
 // Message is a custom struct event type to handle the Lambda input
 type Message struct {
 	Zipcode string `json:"zipcode"`
