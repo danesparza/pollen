@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/danesparza/pollen/data"
@@ -24,11 +25,21 @@ type Message struct {
 // HandleRequest handles the AWS lambda request
 func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) {
 
-	//	Our return value:
-	retval := data.PollenReport{}
+	//	Set the services to call with
+	services := []data.PollenService{
+		data.ClaritinService{},
+		data.NasacortService{},
+		data.ZyrtecService{},
+	}
 
-	//	Return our return response
-	return retval, nil
+	//	Call the helper method to get the report:
+	response := data.GetPollenReport(services, msg.Zipcode)
+
+	//	Set the service version information:
+	response.Version = fmt.Sprintf("%s.%s", BuildVersion, CommitID)
+
+	//	Return our response
+	return response, nil
 }
 
 func main() {
