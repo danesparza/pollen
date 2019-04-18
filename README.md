@@ -32,3 +32,17 @@ You should get a nice JSON response that looks like this:
   "version": "1.0.4.f3092bea655df439b7b3eaa3cfe9b628dec03cff"
 }
 ```
+
+## What does the data mean?
+Parameter          | Description
+----------         | -----------
+location           | The detected city/state location for the report
+zip                | The zipcode that was passed to the Lambda function
+predominant_pollen | The predominant pollen currently detected in the area
+startdate          | The date/time for the report
+data               | An array of floats.  This indicates the pollen indices by day, starting with today.  In the case of the example above, today's pollen index is 10.2, tomorrow's pollen index is 1, the next day's index is 7.9, etc.  
+service            | The reporting service
+version            | The version of the pollen Lambda service being used
+
+## How can use it outside of AWS?
+Simple!  Just use [AWS API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-integrations.html) to setup a REST API that calls your new Lambda function.
