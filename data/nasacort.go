@@ -1,12 +1,15 @@
 package data
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/aws/aws-xray-sdk-go/xray"
+	"golang.org/x/net/context/ctxhttp"
 )
 
 // NasacortService is a pollen service for Zyrtec formatted data
@@ -29,18 +32,22 @@ type NasacortResponse struct {
 }
 
 // GetPollenReport gets the pollen report
-func (s NasacortService) GetPollenReport(zipcode string) (PollenReport, error) {
+func (s NasacortService) GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error) {
+	//	Start the service segment
+	ctx, seg := xray.BeginSegment(ctx, "nasacort-service")
+
 	//	Our return value
 	retval := PollenReport{}
 
 	//	Format the url:
 	apiurl := "https://www.nasacort.com/wp-json/pollen/get/"
 
-	resp, err := http.PostForm(apiurl, url.Values{
+	resp, err := ctxhttp.PostForm(ctx, xray.Client(nil), apiurl, url.Values{
 		"zipcode": {zipcode},
 	})
 
 	if err != nil {
+		seg.AddError(err)
 		apperr := fmt.Errorf("There was a problem calling Nasacort API: %s", err)
 		return retval, apperr
 	}
@@ -56,6 +63,7 @@ func (s NasacortService) GetPollenReport(zipcode string) (PollenReport, error) {
 	serviceResponse := NasacortResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&serviceResponse)
 	if err != nil {
+		seg.AddError(err)
 		apperr := fmt.Errorf("There was a problem decoding the response from Nasacort API: %s", err)
 		return retval, apperr
 	}

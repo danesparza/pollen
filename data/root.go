@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"time"
 )
 
@@ -18,11 +19,11 @@ type PollenReport struct {
 // PollenService is the interface for all services that can fetch pollen data
 type PollenService interface {
 	// GetPollenReport gets the pollen report
-	GetPollenReport(zipcode string) (PollenReport, error)
+	GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error)
 }
 
 // GetPollenReport calls all services in parallel and returns the first result
-func GetPollenReport(services []PollenService, zipcode string) PollenReport {
+func GetPollenReport(ctx context.Context, services []PollenService, zipcode string) PollenReport {
 
 	ch := make(chan PollenReport, 1)
 
@@ -30,10 +31,10 @@ func GetPollenReport(services []PollenService, zipcode string) PollenReport {
 	for _, service := range services {
 
 		//	Launch a goroutine for each service...
-		go func(s PollenService, zip string) {
+		go func(c context.Context, s PollenService, zip string) {
 
 			//	Get its pollen report ...
-			result, err := s.GetPollenReport(zip)
+			result, err := s.GetPollenReport(c, zip)
 
 			//	As long as we don't have an error, return what we found on the result channel
 			if err == nil {
@@ -42,7 +43,7 @@ func GetPollenReport(services []PollenService, zipcode string) PollenReport {
 				default:
 				}
 			}
-		}(service, zipcode)
+		}(ctx, service, zipcode)
 
 	}
 

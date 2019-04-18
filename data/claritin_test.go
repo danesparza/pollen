@@ -1,6 +1,7 @@
 package data_test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/danesparza/pollen/data"
@@ -12,7 +13,7 @@ func TestClaritin_GetPollenReport_ReturnsValidData(t *testing.T) {
 	zipcode := "30019"
 
 	//	Act
-	response, err := service.GetPollenReport(zipcode)
+	response, err := service.GetPollenReport(context.Background(), zipcode)
 
 	//	Assert
 	if err != nil {

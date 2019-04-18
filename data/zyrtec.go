@@ -1,10 +1,13 @@
 package data
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"time"
+
+	"github.com/aws/aws-xray-sdk-go/xray"
+	"golang.org/x/net/context/ctxhttp"
 )
 
 // ZyrtecService is a pollen service for Zyrtec formatted data
@@ -25,7 +28,10 @@ type ZyrtecResponse struct {
 }
 
 // GetPollenReport gets the pollen report
-func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
+func (s ZyrtecService) GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error) {
+
+	//	Start the service segment
+	ctx, seg := xray.BeginSegment(ctx, "zyrtec-service")
 
 	//	Our return value
 	retval := PollenReport{}
@@ -33,23 +39,14 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 	//	Format the url:
 	apiurl := fmt.Sprintf("https://api.allergycastapp.com/allergies/dashboard/%s", zipcode)
 
-	//	Create the client
-	client := &http.Client{}
-
 	//	Create our request:
-	req, err := http.NewRequest("GET", apiurl, nil)
+	resp, err := ctxhttp.Get(ctx, xray.Client(nil), apiurl)
 	if err != nil {
-		apperr := fmt.Errorf("There was a problem creating the Zyrtec API request: %s", err)
-		return retval, apperr
-	}
-
-	//	Execute our request:
-	resp, err := client.Do(req)
-
-	if err != nil {
+		seg.AddError(err)
 		apperr := fmt.Errorf("There was a problem calling Zyrtec API: %s", err)
 		return retval, apperr
 	}
+
 	defer resp.Body.Close()
 
 	//	If the HTTP status code indicates an error, report it and get out
@@ -62,6 +59,7 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 	serviceResponse := ZyrtecResponse{}
 	err = json.NewDecoder(resp.Body).Decode(&serviceResponse)
 	if err != nil {
+		seg.AddError(err)
 		apperr := fmt.Errorf("There was a problem decoding the response from Zyrtec API: %s", err)
 		return retval, apperr
 	}
@@ -70,6 +68,7 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 	layoutBaseZyrtec := "2006-01-02"
 	parsedStartDate, err := time.Parse(layoutBaseZyrtec, serviceResponse.Date)
 	if err != nil {
+		seg.AddError(err)
 		apperr := fmt.Errorf("There was a problem parsing the date in the response from Zyrtec API: %s", err)
 		return retval, apperr
 	}
@@ -91,6 +90,9 @@ func (s ZyrtecService) GetPollenReport(zipcode string) (PollenReport, error) {
 		StartDate:         parsedStartDate,
 		Data:              dataitems,
 	}
+
+	// Close the segment
+	seg.Close(nil)
 
 	return retval, nil
 }

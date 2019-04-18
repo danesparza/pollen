@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/danesparza/pollen/data"
 )
 
@@ -24,6 +25,7 @@ type Message struct {
 
 // HandleRequest handles the AWS lambda request
 func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) {
+	xray.Configure(xray.Config{LogLevel: "trace"})
 
 	//	Set the services to call with
 	services := []data.PollenService{
@@ -33,7 +35,7 @@ func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) 
 	}
 
 	//	Call the helper method to get the report:
-	response := data.GetPollenReport(services, msg.Zipcode)
+	response := data.GetPollenReport(ctx, services, msg.Zipcode)
 
 	//	Set the service version information:
 	response.Version = fmt.Sprintf("%s.%s", BuildVersion, CommitID)
