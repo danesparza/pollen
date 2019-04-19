@@ -26,6 +26,7 @@ type Message struct {
 // HandleRequest handles the AWS lambda request
 func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) {
 	xray.Configure(xray.Config{LogLevel: "trace"})
+	ctx, seg := xray.BeginSegment(ctx, "pollen-lambda-handler")
 
 	//	Set the services to call with
 	services := []data.PollenService{
@@ -39,6 +40,9 @@ func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) 
 
 	//	Set the service version information:
 	response.Version = fmt.Sprintf("%s.%s", BuildVersion, CommitID)
+
+	//	Close the segment
+	seg.Close(nil)
 
 	//	Return our response
 	return response, nil
