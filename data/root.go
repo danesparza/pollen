@@ -53,6 +53,6 @@ func GetPollenReport(ctx context.Context, services []PollenService, zipcode stri
 
 	}
 
-	//	Return the result channel information
+	//	Return the first result passed on the channel
 	return <-ch
 }

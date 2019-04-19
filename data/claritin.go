@@ -83,6 +83,8 @@ func (s ClaritinService) GetPollenReport(ctx context.Context, zipcode string) (P
 		Data:              dataitems,
 	}
 
+	xray.AddMetadata(ctx, "ClaritinResult", retval)
+
 	// Close the segment
 	seg.Close(nil)
 

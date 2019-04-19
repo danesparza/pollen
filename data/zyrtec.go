@@ -91,6 +91,8 @@ func (s ZyrtecService) GetPollenReport(ctx context.Context, zipcode string) (Pol
 		Data:              dataitems,
 	}
 
+	xray.AddMetadata(ctx, "ZyrtecResult", retval)
+
 	// Close the segment
 	seg.Close(nil)
 

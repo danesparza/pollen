@@ -92,5 +92,10 @@ func (s NasacortService) GetPollenReport(ctx context.Context, zipcode string) (P
 		Data:              dataitems,
 	}
 
+	xray.AddMetadata(ctx, "NasacortResult", retval)
+
+	// Close the segment
+	seg.Close(nil)
+
 	return retval, nil
 }
