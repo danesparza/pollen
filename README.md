@@ -1,5 +1,5 @@
 # pollen [![CircleCI](https://circleci.com/gh/danesparza/pollen.svg?style=shield)](https://circleci.com/gh/danesparza/pollen)
-AWS Lambda based service to get pollen data forecast for a given zipcode
+AWS Lambda based service to get pollen data forecast for a given zipcode.  Instrumented with [AWS x-ray](https://aws.amazon.com/xray/).
 
 ## Quick start
 To use this labmda handler, grab the `handler.zip` from the [latest release](https://github.com/danesparza/pollen/releases/latest) and [create a lambda function](https://docs.aws.amazon.com/lambda/latest/dg/lambda-app.html#lambda-app-upload-deployment-pkg) in [your AWS account](https://console.aws.amazon.com/lambda/home).  
@@ -46,3 +46,6 @@ version            | The version of the pollen Lambda service being used
 
 ## How can use it outside of AWS?
 Simple!  Just use [AWS API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-integrations.html) to setup a REST API that calls your new Lambda function.
+
+## AWS X-ray?
+Yep -- the service is instrumented with [AWS X-ray](https://aws.amazon.com/xray/), so you can get an idea of runtime performance.  Just navigate to X-Ray in your console to check it out.
