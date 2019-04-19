@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/danesparza/pollen/data"
 )
 
@@ -11,9 +12,12 @@ func TestClaritin_GetPollenReport_ReturnsValidData(t *testing.T) {
 	//	Arrange
 	service := data.ClaritinService{}
 	zipcode := "30019"
+	ctx := context.Background()
+	ctx, seg := xray.BeginSegment(ctx, "unit-test")
+	defer seg.Close(nil)
 
 	//	Act
-	response, err := service.GetPollenReport(context.Background(), zipcode)
+	response, err := service.GetPollenReport(ctx, zipcode)
 
 	//	Assert
 	if err != nil {

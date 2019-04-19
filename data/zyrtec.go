@@ -31,7 +31,7 @@ type ZyrtecResponse struct {
 func (s ZyrtecService) GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error) {
 
 	//	Start the service segment
-	ctx, seg := xray.BeginSegment(ctx, "zyrtec-service")
+	ctx, seg := xray.BeginSubsegment(ctx, "zyrtec-service")
 
 	//	Our return value
 	retval := PollenReport{}

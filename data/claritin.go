@@ -29,7 +29,7 @@ type ClaritinResponse struct {
 // GetPollenReport gets the pollen report
 func (s ClaritinService) GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error) {
 	//	Start the service segment
-	ctx, seg := xray.BeginSegment(ctx, "claritin-service")
+	ctx, seg := xray.BeginSubsegment(ctx, "claritin-service")
 
 	//	Our return value
 	retval := PollenReport{}

@@ -3,6 +3,8 @@ package data
 import (
 	"context"
 	"time"
+
+	"github.com/aws/aws-xray-sdk-go/xray"
 )
 
 // PollenReport represents the report of pollen data
@@ -26,6 +28,10 @@ type PollenService interface {
 func GetPollenReport(ctx context.Context, services []PollenService, zipcode string) PollenReport {
 
 	ch := make(chan PollenReport, 1)
+
+	//	Start the service segment
+	ctx, seg := xray.BeginSubsegment(ctx, "pollen-report")
+	defer seg.Close(nil)
 
 	//	For each passed service ...
 	for _, service := range services {

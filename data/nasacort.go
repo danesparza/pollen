@@ -34,7 +34,7 @@ type NasacortResponse struct {
 // GetPollenReport gets the pollen report
 func (s NasacortService) GetPollenReport(ctx context.Context, zipcode string) (PollenReport, error) {
 	//	Start the service segment
-	ctx, seg := xray.BeginSegment(ctx, "nasacort-service")
+	ctx, seg := xray.BeginSubsegment(ctx, "nasacort-service")
 
 	//	Our return value
 	retval := PollenReport{}
