@@ -62,7 +62,7 @@ func (s ClaritinService) GetPollenReport(ctx context.Context, zipcode string) (P
 	}
 
 	//	Parse the date/time:
-	layoutBaseClartin := "1/02/2006 15:04:05 PM"
+	layoutBaseClartin := "1/2/2006 15:04:05 PM"
 	parsedStartDate, err := time.Parse(layoutBaseClartin, serviceResponse.PollenForecast.Timestamp)
 	if err != nil {
 		seg.AddError(err)
