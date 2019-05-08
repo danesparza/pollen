@@ -2,7 +2,7 @@
 AWS Lambda based API service to get pollen data forecast for a given zipcode.  It's designed to attempt to get pollen data from 3 sources in parallel and return the data from the service that responds first.  Instrumented with [AWS x-ray](https://aws.amazon.com/xray/).
 
 ## Quick start
-To use this labmda handler, grab the `handler.zip` from the [latest release](https://github.com/danesparza/pollen/releases/latest) and [create a lambda function](https://docs.aws.amazon.com/lambda/latest/dg/lambda-app.html#lambda-app-upload-deployment-pkg) in [your AWS account](https://console.aws.amazon.com/lambda/home).  
+To use this labmda handler, grab the `pollen_handler.zip` from the [latest release](https://github.com/danesparza/pollen/releases/latest) and [create a lambda function](https://docs.aws.amazon.com/lambda/latest/dg/lambda-app.html#lambda-app-upload-deployment-pkg) in [your AWS account](https://console.aws.amazon.com/lambda/home).  
 
 When creating the function on AWS ... in the *Function code* section be sure to upload the `handler.zip`, select the 'Go' runtime, and select 'pollen' as the handler name:
 ![Screenshot of lambda creation in AWS console](lambda_setup.png?raw=true)
