@@ -4,7 +4,7 @@ AWS Lambda based API service to get pollen data forecast for a given zipcode.  I
 ## Quick start
 To use this labmda handler, grab the `pollen_handler.zip` from the [latest release](https://github.com/danesparza/pollen/releases/latest) and [create a lambda function](https://docs.aws.amazon.com/lambda/latest/dg/lambda-app.html#lambda-app-upload-deployment-pkg) in [your AWS account](https://console.aws.amazon.com/lambda/home).  
 
-When creating the function on AWS ... in the *Function code* section be sure to upload the `handler.zip`, select the 'Go' runtime, and select 'pollen' as the handler name:
+When creating the function on AWS ... in the *Function code* section be sure to upload the `pollen_handler.zip`, select the 'Go' runtime, and select 'pollen' as the handler name:
 ![Screenshot of lambda creation in AWS console](lambda_setup.png?raw=true)
 
 ## Testing the service
