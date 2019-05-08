@@ -38,11 +38,11 @@ jobs:
 
       - run:
          name: Package AWS handler
-         command: zip handler.zip ./pollen
+         command: zip pollen_handler.zip ./pollen
 
       - run:
          name: Push package to artifacts
-         command: mv handler.zip /tmp/artifacts/
+         command: mv pollen_handler.zip /tmp/artifacts/
 
       # Indicate we have artifacts
       - store_artifacts:
