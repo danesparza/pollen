@@ -44,10 +44,14 @@ func GetPollenReport(ctx context.Context, services []PollenService, zipcode stri
 
 			//	As long as we don't have an error, return what we found on the result channel
 			if err == nil {
-				select {
-				case ch <- result:
-				default:
-				}
+				
+				//	Make sure we also have more than one datapoint!
+				if len(result.Data) > 1 {
+					select {
+					case ch <- result:
+					default:
+					}
+				}				
 			}
 		}(ctx, service, zipcode)
 
