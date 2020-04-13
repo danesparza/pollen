@@ -33,6 +33,7 @@ func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) 
 		data.ClaritinService{},
 		data.NasacortService{},
 		data.ZyrtecService{},
+		data.PollencomService{},
 	}
 
 	//	Call the helper method to get the report:

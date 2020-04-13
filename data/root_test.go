@@ -14,6 +14,7 @@ func TestMultipleServices_GetPollenData_ReturnsValidData(t *testing.T) {
 		data.ClaritinService{},
 		data.NasacortService{},
 		data.ZyrtecService{},
+		data.PollencomService{},
 	}
 	zipcode := "30019"
 	ctx := context.Background()
