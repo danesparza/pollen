@@ -12,7 +12,6 @@ func TestMultipleServices_GetPollenData_ReturnsValidData(t *testing.T) {
 	//	Arrange
 	services := []data.PollenService{
 		data.NasacortService{},
-		data.ZyrtecService{},
 		data.PollencomService{},
 	}
 	zipcode := "30019"

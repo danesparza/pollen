@@ -31,7 +31,6 @@ func HandleRequest(ctx context.Context, msg Message) (data.PollenReport, error) 
 	//	Set the services to call with
 	services := []data.PollenService{
 		data.NasacortService{},
-		data.ZyrtecService{},
 		data.PollencomService{},
 	}
 
