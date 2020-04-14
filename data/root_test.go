@@ -11,7 +11,6 @@ import (
 func TestMultipleServices_GetPollenData_ReturnsValidData(t *testing.T) {
 	//	Arrange
 	services := []data.PollenService{
-		data.ClaritinService{},
 		data.NasacortService{},
 		data.ZyrtecService{},
 		data.PollencomService{},
